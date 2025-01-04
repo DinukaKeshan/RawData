@@ -29,6 +29,34 @@ app.get("/users", async (req, res) => {
   }
 });
 
+app.get("/user", async (req, res) => {
+  try {
+    const filterName = req.body.username;
+    const members = await User.findOne({ name: filterName });
+    res.json(members);
+  } catch (error) {
+    res.json(error);
+  }
+});
+
+app.get("/save", async (req, res) => {
+  try {
+    const newuser = User.create({
+      name: "Dinuka",
+      age: 25,
+      email: "abc",
+      city: "def",
+      profession: "hij",
+    });
+    const newmember = await newuser
+      .save()
+      .then(() => res.json("user created"))
+      .catch(() => res.json("user creation failed"));
+  } catch (error) {
+    res.json(error);
+  }
+});
+
 app.listen(3000, () => {
   console.log("Server is running on : http://localhost:3000/");
 });
